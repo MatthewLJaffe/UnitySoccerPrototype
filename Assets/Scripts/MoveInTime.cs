@@ -22,7 +22,7 @@ public class MoveInTime : MonoBehaviour
 
     private void Update()
     {
-        if (!_gameGoing) return;
+        //if (!_gameGoing) return;
         if (_currTime < time)
         {        
             transform.position = Vector3.Lerp(_initialPos, target.position, _currTime/time);
