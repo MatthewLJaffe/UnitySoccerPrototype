@@ -9,7 +9,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 958106916636574291, guid: a374d417a4a5130429df265ea5752b40, type: 3}
       propertyPath: m_Name
-      value: RedPlayer
+      value: RedPlayer Variant
       objectReference: {fileID: 0}
     - target: {fileID: 958106916636574292, guid: a374d417a4a5130429df265ea5752b40, type: 3}
       propertyPath: m_RootOrder
