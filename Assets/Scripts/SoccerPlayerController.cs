@@ -5,10 +5,10 @@ public class SoccerPlayerController : MonoBehaviour
     [SerializeField] private MovementAction[] movementActions;
     [SerializeField] private float topSpeed;
     [SerializeField] private float slowThreshold;
-    private Vector3 _velocity = Vector3.zero;
+    public Vector3 velocity = Vector3.zero;
     int _currAnimActionIdx;
     private float _currStillTime;
-    private bool gameStarted;
+    private bool gameGoing = true;
 
     [System.Serializable]
     private struct MovementAction
@@ -28,10 +28,20 @@ public class SoccerPlayerController : MonoBehaviour
         Curve
     }
 
+    private void Awake()
+    {
+        SoccerBallController.gameComplete += StopMovement;
+    }
+
+    private void StopMovement()
+    {
+        gameGoing = false;
+        anim.SetFloat("Speed", 0);
+    }
 
     private void FixedUpdate()
     {
-        if (_currAnimActionIdx < movementActions.Length)
+        if (_currAnimActionIdx < movementActions.Length && gameGoing)
             PerformMovementAction();
     }
 
@@ -42,26 +52,26 @@ public class SoccerPlayerController : MonoBehaviour
         {
             var dir = (movementAction.targetPos.position - transform.position).normalized;
             if (movementAction.stratagey == EasingStratagey.Curve) {
-                _velocity += movementAction.acc * Time.fixedDeltaTime * dir;
+                velocity += movementAction.acc * Time.fixedDeltaTime * dir;
             }
             else if (movementAction.stratagey == EasingStratagey.Slow)
             {
                 //velocity slow or in right direction speed up
-                if (Vector3.Dot(_velocity.normalized, dir) > .8 || _velocity.magnitude < slowThreshold)
+                if (Vector3.Dot(velocity.normalized, dir) > .8 || velocity.magnitude < slowThreshold)
                 {
-                    _velocity += movementAction.acc * Time.fixedDeltaTime * dir;
+                    velocity += movementAction.acc * Time.fixedDeltaTime * dir;
                 }
                 //velocity vector is big and in wrong direction slow down
                 else
                 {
-                    _velocity -= _velocity.normalized * Time.fixedDeltaTime * movementAction.acc;
+                    velocity -= velocity.normalized * Time.fixedDeltaTime * movementAction.acc;
                 }
             }
-            if (_velocity.magnitude > movementAction.maxSpeed)
-                _velocity = _velocity.normalized * movementAction.maxSpeed;
-            anim.SetFloat("Speed", _velocity.magnitude / topSpeed);
-            transform.forward = _velocity;
-            transform.position += _velocity * Time.fixedDeltaTime;
+            if (velocity.magnitude > movementAction.maxSpeed)
+                velocity = velocity.normalized * movementAction.maxSpeed;
+            anim.SetFloat("Speed", velocity.magnitude / topSpeed);
+            transform.forward = velocity;
+            transform.position += velocity * Time.fixedDeltaTime;
             if (Vector3.Distance(transform.position, movementAction.targetPos.position) < movementAction.distanceThreshold)
             {
                 _currAnimActionIdx++;
@@ -70,14 +80,14 @@ public class SoccerPlayerController : MonoBehaviour
         //slow down for certain time
         else
         {
-            if (_velocity.magnitude > 0)
-                _velocity -= _velocity.normalized * Time.fixedDeltaTime* movementAction.acc;
-            if (_velocity.magnitude <= Time.fixedDeltaTime * movementAction.acc)
+            if (velocity.magnitude > 0)
+                velocity -= velocity.normalized * Time.fixedDeltaTime* movementAction.acc;
+            if (velocity.magnitude <= Time.fixedDeltaTime * movementAction.acc)
             {
-                _velocity = Vector3.zero;
+                velocity = Vector3.zero;
             }
-            transform.position += _velocity * Time.fixedDeltaTime;
-            anim.SetFloat("Speed", _velocity.magnitude / topSpeed);
+            transform.position += velocity * Time.fixedDeltaTime;
+            anim.SetFloat("Speed", velocity.magnitude / topSpeed);
             _currStillTime += Time.fixedDeltaTime;
             if (_currStillTime >= movementAction.maxStillTime)
             {
