@@ -13,6 +13,7 @@ public class SoccerBallController : MonoBehaviour
     [SerializeField] private AnimationCurve translateCurve;
     [SerializeField] private AnimationCurve heightCurve;
     [SerializeField] private AnimationCurve rotateCurve;
+    [SerializeField] private EndMenu endMenu;
     private Coroutine _moveRoutine;
 
     
@@ -20,10 +21,11 @@ public class SoccerBallController : MonoBehaviour
     private struct ChoiceTarget
     {
         public Transform target;
-        public KeyCode choice;
+        public String choice;
         public float travelTime;
         public float score;
         public AudioClip feedbackNoise;
+        public int analysisScreenIdx;
     }
     
 
@@ -34,9 +36,10 @@ public class SoccerBallController : MonoBehaviour
 
     private void Update()
     {
+      
         foreach (var ct in choiceTargets)
         {
-            if (Input.GetKeyDown(ct.choice) && _moveRoutine == null)
+            if (Input.GetButton(ct.choice) && _moveRoutine == null)
             {
                 _moveRoutine = StartCoroutine(MoveBall(ct));
             }
@@ -61,7 +64,6 @@ public class SoccerBallController : MonoBehaviour
             transform.position = newPos;
             transform.rotation = 
                 Quaternion.Euler(Vector3.Lerp(initialRot, targetRot.eulerAngles, rotateCurve.Evaluate(t/ct.travelTime)));
-            Debug.Log(transform.rotation.eulerAngles);
             yield return null;
         }
 
@@ -69,5 +71,6 @@ public class SoccerBallController : MonoBehaviour
         kickSound.Play();
         onGameComplete.Invoke(ct.score);
         gameComplete.Invoke();
+        endMenu.anaysisScreenToShow = ct.analysisScreenIdx;
     }
 }

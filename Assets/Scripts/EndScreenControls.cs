@@ -58,7 +58,6 @@ public class EndScreenControls : MonoBehaviour
         }
 
         
-        Debug.Log(_AnalysisBegin);
         if (_AnalysisBegin) {
             if (Input.GetKeyDown(KeyCode.RightArrow)) {
                 Images[picChoice].SetActive(false);

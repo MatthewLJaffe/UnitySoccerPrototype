@@ -33,6 +33,11 @@ public class SoccerPlayerController : MonoBehaviour
         SoccerBallController.gameComplete += StopMovement;
     }
 
+    private void OnDestroy()
+    {
+        SoccerBallController.gameComplete -= StopMovement;
+    }
+
     private void StopMovement()
     {
         gameGoing = false;
@@ -96,8 +101,4 @@ public class SoccerPlayerController : MonoBehaviour
             }
         }
     }
-
-
-
-
 }
