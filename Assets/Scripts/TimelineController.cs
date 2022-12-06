@@ -8,6 +8,7 @@ public class TimelineController : MonoBehaviour
 {
     [SerializeField] private PlayableDirector timeline;
     [SerializeField] private TimedEvent[] timedEvents;
+    [SerializeField] private SoccerBallController ballController;
     private Coroutine timelineRoutine;
     private float currTimeStep = 1f;
     private int timeDir;
@@ -118,8 +119,11 @@ public class TimelineController : MonoBehaviour
                     }
                 }
             }
+            //update soccer ball if in review
+            if (_inReview) {
+                ballController.ReplayBall((float)timeline.time);
+            }
             yield return null;
-
         }
         timeline.time = Mathf.Clamp((float)timeline.time, 0, (float)timeline.duration);
         timeline.DeferredEvaluate();

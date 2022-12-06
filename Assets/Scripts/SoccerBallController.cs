@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using System;
 using UnityEngine.Events;
+using UnityEngine.Playables;
 
 public class SoccerBallController : MonoBehaviour
 {
@@ -15,8 +16,15 @@ public class SoccerBallController : MonoBehaviour
     [SerializeField] private AnimationCurve rotateCurve;
     [SerializeField] private Transform footballStartPos;
     [SerializeField] private EndMenu endMenu;
+    [SerializeField] private PlayableDirector timeline;
+    private Vector3 _initialPos;
+    private Vector3 _initialRot;
+    private Vector3 _targetPos;
+    private Quaternion _targetRot;
     private bool _gameGoing;
     private Coroutine _moveRoutine;
+    private float _startTime;
+    private float _endTime;
 
     
     [System.Serializable]
@@ -29,17 +37,6 @@ public class SoccerBallController : MonoBehaviour
         public float score;
         public AudioClip feedbackNoise;
         public int analysisScreenIdx;
-    }
-
-    private void Awake()
-    {
-        
-    }
-
-
-    public void CompleteGame(float baseScore)
-    {
-        onGameComplete.Invoke(baseScore);
     }
 
     private void Update()
@@ -64,19 +61,21 @@ public class SoccerBallController : MonoBehaviour
     {
         kickSound.Play();
         scoreTracker.StopTimer();
-        Vector3 initialRot = transform.rotation.eulerAngles;
-        Vector3 initialPos = transform.position;
-        Vector3 targetPos = ct.target.position;
-        Quaternion targetRot = ct.target.rotation;
-        var height = Vector3.Distance(ct.target.position, initialPos) / 15f;
+        _initialRot = transform.rotation.eulerAngles;
+        _initialPos = transform.position;
+        _targetPos = ct.target.position;
+        _targetRot = ct.target.rotation;
+        _startTime = (float)timeline.time;
+        _endTime = _startTime + ct.travelTime;
+        var height = Vector3.Distance(ct.target.position, _initialPos) / 15f;
         for (var t = 0f; t < ct.travelTime; t += Time.deltaTime)
         {
-            var newPos =  Vector3.Lerp(initialPos, targetPos, translateCurve.Evaluate(t/ct.travelTime));
+            var newPos =  Vector3.Lerp(_initialPos, _targetPos, translateCurve.Evaluate(t/ct.travelTime));
             newPos.y = 1;
             newPos.y += Mathf.Lerp(0, height, heightCurve.Evaluate(t/ct.travelTime));
             transform.position = newPos;
             transform.rotation = 
-                Quaternion.Euler(Vector3.Lerp(initialRot, targetRot.eulerAngles, rotateCurve.Evaluate(t/ct.travelTime)));
+                Quaternion.Euler(Vector3.Lerp(_initialRot, _targetRot.eulerAngles, rotateCurve.Evaluate(t/ct.travelTime)));
             yield return null;
         }
 
@@ -87,9 +86,27 @@ public class SoccerBallController : MonoBehaviour
         endMenu.anaysisScreenToShow = ct.analysisScreenIdx;
     }
 
+    public void ReplayBall(float time)
+    {
+        var height = Vector3.Distance(_targetPos, _initialPos) / 15f;
+        if (time < _startTime || time > _endTime) return;
+        var currT = (time - _startTime) / (_endTime - _startTime);
+        var newPos = Vector3.Lerp(_initialPos, _targetPos, translateCurve.Evaluate(currT));
+        newPos.y = 1;
+        newPos.y += Mathf.Lerp(0, height, heightCurve.Evaluate(currT));
+        transform.position = newPos;
+        transform.rotation =
+            Quaternion.Euler(Vector3.Lerp(_initialRot, _targetRot.eulerAngles, rotateCurve.Evaluate(currT)));
+    }
+
     public void SetFootballStartPos()
     {
         transform.position = footballStartPos.position;
+    }
+
+    public void ResetBall()
+    {
+        transform.position = Vector3.zero;
     }
 }
 
