@@ -43,6 +43,12 @@ public class TimelineController : MonoBehaviour
     {
         if (timelineRoutine != null)
             StopCoroutine(timelineRoutine);
+    }
+    
+    public void PauseTimeline()
+    {
+        if (timelineRoutine != null)
+            StopCoroutine(timelineRoutine);
         _paused = true;
     }
 
@@ -57,6 +63,9 @@ public class TimelineController : MonoBehaviour
     {
         if (timeDir == -1) return;
         timeDir = -1;
+        foreach (var te in timedEvents) {
+            te._playedForward = false;
+        }
         if (!_paused)
         {
             if (timelineRoutine != null)
@@ -69,6 +78,9 @@ public class TimelineController : MonoBehaviour
     {
         if (timeDir == 1) return;
         timeDir = 1;
+        foreach (var te in timedEvents) {
+            te._playedBackwards = false;
+        }
         if (!_paused)
         {
             if (timelineRoutine != null)
@@ -103,7 +115,6 @@ public class TimelineController : MonoBehaviour
                     {
                         te.uEvent.Invoke();
                         te._playedForward = true;
-                        te._playedBackwards = false;
                     }
                 }
             }
@@ -115,7 +126,6 @@ public class TimelineController : MonoBehaviour
                     {
                         te.uEvent.Invoke();
                         te._playedBackwards = true;
-                        te._playedForward = false;
                     }
                 }
             }

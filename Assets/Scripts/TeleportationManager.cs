@@ -9,6 +9,7 @@ public class TeleportationManager : MonoBehaviour
     [SerializeField] private InputActionAsset actionAsset;
     [SerializeField] private XRRayInteractor rayInteractor;
     [SerializeField] private TeleportationProvider provider;
+    [SerializeField] private Transform startPoint;
     private InputAction _thumbstick;
     private bool _isActive;
 
@@ -58,6 +59,11 @@ public class TeleportationManager : MonoBehaviour
     {
         rayInteractor.enabled = true;
         _isActive = false;
+    }
 
+    public void TeleportToStartPos()
+    {
+        transform.position = startPoint.position;
+        transform.rotation = startPoint.rotation;
     }
 }
