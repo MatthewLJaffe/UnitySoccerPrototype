@@ -16,13 +16,11 @@ public class MoveInTime : MonoBehaviour
     private void Awake()
     {
         _initialPos = transform.position;
-        TransitionController.gameStart += delegate { _gameGoing = true; };
         ScoreTracker.gameStopped += delegate { _gameGoing = false; };
     }
 
     private void Update()
     {
-        //if (!_gameGoing) return;
         if (_currTime < time)
         {        
             transform.position = Vector3.Lerp(_initialPos, target.position, _currTime/time);

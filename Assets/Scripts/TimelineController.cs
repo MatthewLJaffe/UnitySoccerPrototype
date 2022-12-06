@@ -11,6 +11,8 @@ public class TimelineController : MonoBehaviour
     private Coroutine timelineRoutine;
     private float currTimeStep = 1f;
     private int timeDir;
+    private bool _inReview;
+    private bool _paused;
 
     [System.Serializable]
     public class TimedEvent
@@ -19,11 +21,10 @@ public class TimelineController : MonoBehaviour
         public UnityEvent uEvent;
         public bool playForwards;
         public bool playBackwards;
+        public bool playInReview;
         [HideInInspector] public bool _playedForward;
         [HideInInspector] public bool _playedBackwards;
     }
-
-
 
     public void Update()
     {
@@ -41,6 +42,13 @@ public class TimelineController : MonoBehaviour
     {
         if (timelineRoutine != null)
             StopCoroutine(timelineRoutine);
+        _paused = true;
+    }
+
+    public void PlayTimeline()
+    {
+        timelineRoutine = StartCoroutine(UpdateTimeline());
+        _paused = false;
     }
 
 
@@ -48,15 +56,30 @@ public class TimelineController : MonoBehaviour
     {
         if (timeDir == -1) return;
         timeDir = -1;
-        if (timelineRoutine != null)
-            StopCoroutine(timelineRoutine);
-        timelineRoutine = StartCoroutine(UpdateTimeline());
+        if (!_paused)
+        {
+            if (timelineRoutine != null)
+                StopCoroutine(timelineRoutine);
+            timelineRoutine = StartCoroutine(UpdateTimeline());
+        }
     }
 
     public void PlayForward()
     {
         if (timeDir == 1) return;
         timeDir = 1;
+        if (!_paused)
+        {
+            if (timelineRoutine != null)
+                StopCoroutine(timelineRoutine);
+            timelineRoutine = StartCoroutine(UpdateTimeline());
+        }
+    }
+
+    public void PlayFromBeginning()
+    {
+        timeDir = 1;
+        timeline.time = 0;
         if (timelineRoutine != null)
             StopCoroutine(timelineRoutine);
         timelineRoutine = StartCoroutine(UpdateTimeline());
@@ -75,7 +98,7 @@ public class TimelineController : MonoBehaviour
             {
                 foreach(var te in timedEvents)
                 {
-                    if (te.playForwards && !te._playedForward && timeline.time >= te.time)
+                    if (te.playForwards && !te._playedForward && timeline.time >= te.time && (!_inReview || te.playInReview))
                     {
                         te.uEvent.Invoke();
                         te._playedForward = true;
@@ -87,7 +110,7 @@ public class TimelineController : MonoBehaviour
             {
                 foreach (var te in timedEvents)
                 {
-                    if (te.playBackwards && !te._playedBackwards && timeline.time <= te.time)
+                    if (te.playBackwards && !te._playedBackwards && timeline.time <= te.time && (!_inReview || te.playInReview))
                     {
                         te.uEvent.Invoke();
                         te._playedBackwards = true;
@@ -106,5 +129,10 @@ public class TimelineController : MonoBehaviour
     private bool ApproxEquals(double num, double other)
     {
         return Mathf.Approximately((float)num, (float)other);
+    }
+
+    public void SetReview(bool b)
+    {
+        _inReview = b;
     }
 }

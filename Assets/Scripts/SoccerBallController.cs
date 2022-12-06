@@ -15,6 +15,7 @@ public class SoccerBallController : MonoBehaviour
     [SerializeField] private AnimationCurve rotateCurve;
     [SerializeField] private Transform footballStartPos;
     [SerializeField] private EndMenu endMenu;
+    private bool _gameGoing;
     private Coroutine _moveRoutine;
 
     
@@ -29,7 +30,12 @@ public class SoccerBallController : MonoBehaviour
         public AudioClip feedbackNoise;
         public int analysisScreenIdx;
     }
-    
+
+    private void Awake()
+    {
+        
+    }
+
 
     public void CompleteGame(float baseScore)
     {
@@ -38,7 +44,8 @@ public class SoccerBallController : MonoBehaviour
 
     private void Update()
     {
-      
+
+        if (!_gameGoing) return;
         foreach (var ct in choiceTargets)
         {
             if ((Input.GetButton(ct.choice) || Input.GetKeyDown(ct.KeyCode)) && _moveRoutine == null)
@@ -46,6 +53,11 @@ public class SoccerBallController : MonoBehaviour
                 _moveRoutine = StartCoroutine(MoveBall(ct));
             }
         }
+    }
+
+    public void SetGameGoing(bool b)
+    {
+        _gameGoing = b;
     }
 
     private IEnumerator MoveBall(ChoiceTarget ct)
