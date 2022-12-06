@@ -13,6 +13,7 @@ public class SoccerBallController : MonoBehaviour
     [SerializeField] private AnimationCurve translateCurve;
     [SerializeField] private AnimationCurve heightCurve;
     [SerializeField] private AnimationCurve rotateCurve;
+    [SerializeField] private Transform footballStartPos;
     [SerializeField] private EndMenu endMenu;
     private Coroutine _moveRoutine;
 
@@ -22,6 +23,7 @@ public class SoccerBallController : MonoBehaviour
     {
         public Transform target;
         public String choice;
+        public KeyCode KeyCode;
         public float travelTime;
         public float score;
         public AudioClip feedbackNoise;
@@ -39,7 +41,7 @@ public class SoccerBallController : MonoBehaviour
       
         foreach (var ct in choiceTargets)
         {
-            if (Input.GetButton(ct.choice) && _moveRoutine == null)
+            if ((Input.GetButton(ct.choice) || Input.GetKeyDown(ct.KeyCode)) && _moveRoutine == null)
             {
                 _moveRoutine = StartCoroutine(MoveBall(ct));
             }
@@ -50,10 +52,9 @@ public class SoccerBallController : MonoBehaviour
     {
         kickSound.Play();
         scoreTracker.StopTimer();
-        var playerController = ct.target.GetComponent<SoccerPlayerController>();
         Vector3 initialRot = transform.rotation.eulerAngles;
         Vector3 initialPos = transform.position;
-        Vector3 targetPos = ct.target.position + ct.travelTime * 1.2f * playerController.velocity;
+        Vector3 targetPos = ct.target.position;
         Quaternion targetRot = ct.target.rotation;
         var height = Vector3.Distance(ct.target.position, initialPos) / 15f;
         for (var t = 0f; t < ct.travelTime; t += Time.deltaTime)
@@ -73,4 +74,10 @@ public class SoccerBallController : MonoBehaviour
         gameComplete.Invoke();
         endMenu.anaysisScreenToShow = ct.analysisScreenIdx;
     }
+
+    public void SetFootballStartPos()
+    {
+        transform.position = footballStartPos.position;
+    }
 }
+
