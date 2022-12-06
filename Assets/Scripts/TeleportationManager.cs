@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,26 +12,33 @@ public class TeleportationManager : MonoBehaviour
     [SerializeField] private TeleportationProvider provider;
     [SerializeField] private Transform startPoint;
     private InputAction _thumbstick;
+    private InputAction _activate;
     private bool _isActive;
 
     private void Start()
     {
-        rayInteractor.enabled = false;
-        var activate = actionAsset.FindActionMap("XRI LeftHand Locomotion").FindAction("Teleport Mode Activate");
-        activate.Enable();
+        _activate = actionAsset.FindActionMap("XRI LeftHand Interaction").FindAction("Activate");
+        _activate.Enable();
+        _activate.performed += OnTeleportActivate;
 
-        var cancel = actionAsset.FindActionMap("XRI LeftHand Locomotion").FindAction("Teleport Mode Cancel");
-        cancel.Enable();
 
-        _thumbstick = actionAsset.FindActionMap("XRI LeftHand Locomotion").FindAction("Move");
-        _thumbstick.Enable();
-        activate.performed += OnTeleportActivate;
-        cancel.performed += OnTeleportCancel;
+        //var cancel = actionAsset.FindActionMap("XRI LeftHand Locomotion").FindAction("Teleport Mode Cancel");
+        //cancel.Enable();
 
+        //_thumbstick = actionAsset.FindActionMap("XRI LeftHand Locomotion").FindAction("Move");
+        //_thumbstick.Enable();
+        //cancel.performed += OnTeleportCancel;
+
+    }
+
+    private void OnDestroy()
+    {
+        _activate.performed -= OnTeleportActivate;
     }
 
     private void Update()
     {
+        /*
         if (!_isActive || _thumbstick.triggered)
             return;
         if(!rayInteractor.TryGetCurrent3DRaycastHit(out RaycastHit hit))
@@ -47,18 +55,26 @@ public class TeleportationManager : MonoBehaviour
         provider.QueueTeleportRequest(request);
         rayInteractor.enabled = false;
         _isActive = false;
+        */
     }
 
     private void OnTeleportActivate(InputAction.CallbackContext callbackContext)
     {
-        rayInteractor.enabled = true;
-        _isActive = true;
+        if(!rayInteractor.TryGetCurrent3DRaycastHit(out RaycastHit hit)) {
+            return;
+        }
+        TeleportRequest request = new TeleportRequest()
+        {
+            destinationPosition = hit.point
+        };
+        provider.QueueTeleportRequest(request);
     }
 
     private void OnTeleportCancel(InputAction.CallbackContext callbackContext)
     {
         rayInteractor.enabled = true;
         _isActive = false;
+        Debug.Log("Teleport cancel");
     }
 
     public void TeleportToStartPos()
