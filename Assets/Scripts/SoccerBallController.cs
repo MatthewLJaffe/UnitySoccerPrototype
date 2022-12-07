@@ -16,15 +16,16 @@ public class SoccerBallController : MonoBehaviour
     [SerializeField] private AnimationCurve rotateCurve;
     [SerializeField] private Transform footballStartPos;
     [SerializeField] private EndMenu endMenu;
-    [SerializeField] private PlayableDirector timeline;
+    [SerializeField] private GameSettings gameSettings;
+    public PlayableDirector timeline;
     private Vector3 _initialPos;
     private Vector3 _initialRot;
     private Vector3 _targetPos;
     private Quaternion _targetRot;
     private bool _gameGoing;
     private Coroutine _moveRoutine;
-    private float _startTime;
-    private float _endTime;
+    public float startTime;
+    public float endTime;
 
     
     [System.Serializable]
@@ -37,6 +38,7 @@ public class SoccerBallController : MonoBehaviour
         public float score;
         public AudioClip feedbackNoise;
         public int analysisScreenIdx;
+        public GameObject explainationUI;
     }
 
     private void Update()
@@ -59,14 +61,16 @@ public class SoccerBallController : MonoBehaviour
 
     private IEnumerator MoveBall(ChoiceTarget ct)
     {
+        kickSound.volume = Mathf.Clamp(gameSettings.volume / 10f, .1f, 1f);
         kickSound.Play();
         scoreTracker.StopTimer();
         _initialRot = transform.rotation.eulerAngles;
         _initialPos = transform.position;
         _targetPos = ct.target.position;
         _targetRot = ct.target.rotation;
-        _startTime = (float)timeline.time;
-        _endTime = _startTime + ct.travelTime;
+        startTime = (float)timeline.time;
+        endTime = startTime + ct.travelTime;
+        ct.explainationUI.SetActive(true);
         var height = Vector3.Distance(ct.target.position, _initialPos) / 15f;
         for (var t = 0f; t < ct.travelTime; t += Time.deltaTime)
         {
@@ -80,6 +84,7 @@ public class SoccerBallController : MonoBehaviour
         }
 
         kickSound.clip = ct.feedbackNoise;
+        kickSound.volume = Mathf.Clamp(gameSettings.volume / 10f, .1f, 1f);
         kickSound.Play();
         onGameComplete.Invoke(ct.score);
         gameComplete.Invoke();
@@ -89,8 +94,8 @@ public class SoccerBallController : MonoBehaviour
     public void ReplayBall(float time)
     {
         var height = Vector3.Distance(_targetPos, _initialPos) / 15f;
-        if (time < _startTime || time > _endTime) return;
-        var currT = (time - _startTime) / (_endTime - _startTime);
+        if (time < startTime || time > endTime) return;
+        var currT = (time - startTime) / (endTime - startTime);
         var newPos = Vector3.Lerp(_initialPos, _targetPos, translateCurve.Evaluate(currT));
         newPos.y = 1;
         newPos.y += Mathf.Lerp(0, height, heightCurve.Evaluate(currT));

@@ -9,6 +9,7 @@ public class TimelineController : MonoBehaviour
     [SerializeField] private PlayableDirector timeline;
     [SerializeField] private TimedEvent[] timedEvents;
     [SerializeField] private SoccerBallController ballController;
+    [SerializeField] private GameSettings gameSettings;
     private Coroutine timelineRoutine;
     private float currTimeStep = 1f;
     private int timeDir;
@@ -93,6 +94,7 @@ public class TimelineController : MonoBehaviour
     {
         timeDir = 1;
         timeline.time = 0;
+        _paused = false;
         if (timelineRoutine != null)
             StopCoroutine(timelineRoutine);
         timelineRoutine = StartCoroutine(UpdateTimeline());
@@ -103,7 +105,7 @@ public class TimelineController : MonoBehaviour
         timeline.timeUpdateMode = DirectorUpdateMode.Manual;
         while (timeDir == -1 && timeline.time > 0 || timeDir == 1 && timeline.time < timeline.duration)
         {
-            timeline.time += Time.deltaTime * currTimeStep * timeDir;
+            timeline.time += Time.deltaTime * currTimeStep * timeDir * Mathf.Lerp(.5f, 1.25f, gameSettings.speed / 10);
             //update timeline
             timeline.DeferredEvaluate();
             //events
@@ -132,6 +134,9 @@ public class TimelineController : MonoBehaviour
             //update soccer ball if in review
             if (_inReview) {
                 ballController.ReplayBall((float)timeline.time);
+                //only go until pass was made in timeline
+                if (ballController.endTime <= timeline.time && timeDir == 1)
+                    break;
             }
             yield return null;
         }
