@@ -105,7 +105,7 @@ public class TimelineController : MonoBehaviour
         timeline.timeUpdateMode = DirectorUpdateMode.Manual;
         while (timeDir == -1 && timeline.time > 0 || timeDir == 1 && timeline.time < timeline.duration)
         {
-            timeline.time += Time.deltaTime * currTimeStep * timeDir * Mathf.Lerp(.5f, 1.25f, gameSettings.speed / 10);
+            timeline.time += Time.deltaTime * currTimeStep * timeDir * Mathf.Lerp(.75f, 1.25f, gameSettings.speed / 10);
             //update timeline
             timeline.DeferredEvaluate();
             //events

@@ -59,13 +59,13 @@ public class ScoreTracker : MonoBehaviour
             scoreText.text = "Score: " + Mathf.RoundToInt(baseScore + timePenalty) + "/100";
             timePenaltyText.text = "Time Penalty: " + timePenalty;
             decisionScoreText.text = "Decision Score: " + baseScore;
-            timeText.text = "Time: " + Math.Round(decisionTime / Mathf.Lerp(.5f, 1.25f, gameSettings.speed / 10), 2) + " sec";
+            timeText.text = "Time: " + Math.Round(decisionTime / Mathf.Lerp(.75f, 1.25f, gameSettings.speed / 10), 2) + " sec";
         }
         else
         {
             titleText.text = "Ran out of time!";
             scoreText.text = "Score: 0";
-            timePenaltyText.text = "Time: " + Math.Round(decisionTime / Mathf.Lerp(.5f, 1.25f, gameSettings.speed / 10), 2) + " sec";
+            timePenaltyText.text = "Time: " + Math.Round(decisionTime / Mathf.Lerp(.75f, 1.25f, gameSettings.speed / 10), 2) + " sec";
             decisionScoreText.text = "";
             timeText.text = "";
             soccerBallController.endTime = (float)soccerBallController.timeline.duration;
