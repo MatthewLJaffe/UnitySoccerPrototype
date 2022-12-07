@@ -15,7 +15,6 @@ public class SoccerBallController : MonoBehaviour
     [SerializeField] private AnimationCurve heightCurve;
     [SerializeField] private AnimationCurve rotateCurve;
     [SerializeField] private Transform footballStartPos;
-    [SerializeField] private EndMenu endMenu;
     [SerializeField] private GameSettings gameSettings;
     public PlayableDirector timeline;
     private Vector3 _initialPos;
@@ -63,14 +62,17 @@ public class SoccerBallController : MonoBehaviour
     {
         kickSound.volume = Mathf.Clamp(gameSettings.volume / 10f, .1f, 1f);
         kickSound.Play();
-        scoreTracker.StopTimer();
+        if (scoreTracker)
+            scoreTracker.StopTimer();
         _initialRot = transform.rotation.eulerAngles;
         _initialPos = transform.position;
         _targetPos = ct.target.position;
         _targetRot = ct.target.rotation;
-        startTime = (float)timeline.time;
+        if (timeline)
+            startTime = (float)timeline.time;
         endTime = startTime + ct.travelTime;
-        ct.explainationUI.SetActive(true);
+        if (ct.explainationUI)
+            ct.explainationUI.SetActive(true);
         var height = Vector3.Distance(ct.target.position, _initialPos) / 15f;
         for (var t = 0f; t < ct.travelTime; t += Time.deltaTime)
         {
@@ -88,7 +90,6 @@ public class SoccerBallController : MonoBehaviour
         kickSound.Play();
         onGameComplete.Invoke(ct.score);
         gameComplete.Invoke();
-        endMenu.anaysisScreenToShow = ct.analysisScreenIdx;
     }
 
     public void ReplayBall(float time)
