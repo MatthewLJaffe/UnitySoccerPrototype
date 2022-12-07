@@ -60,10 +60,10 @@ public class SoccerBallController : MonoBehaviour
 
     private IEnumerator MoveBall(ChoiceTarget ct)
     {
-        kickSound.volume = Mathf.Clamp(gameSettings.volume / 10f, .1f, 1f);
-        kickSound.Play();
         if (scoreTracker)
             scoreTracker.StopTimer();
+        kickSound.volume = Mathf.Clamp(gameSettings.volume / 10f, .1f, 1f);
+        kickSound.Play();
         _initialRot = transform.rotation.eulerAngles;
         _initialPos = transform.position;
         _targetPos = ct.target.position;

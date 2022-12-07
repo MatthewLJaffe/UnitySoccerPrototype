@@ -22,7 +22,8 @@ public class TeleportationManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        _activate.performed -= OnTeleportActivate;
+        if (_activate != null)
+            _activate.performed -= OnTeleportActivate;
     }
 
     private void OnTeleportActivate(InputAction.CallbackContext callbackContext)

@@ -566,7 +566,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 44984339}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 19.6, y: 0, z: -20.2}
+  m_LocalPosition: {x: 3.7, y: 0, z: -6.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3489,7 +3489,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &289052666
 Transform:
   m_ObjectHideFlags: 0
@@ -4831,7 +4831,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Next Scenario
+  m_text: Return to Start
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -7454,7 +7454,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 601213060}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -21.1, y: 0, z: 19.7}
+  m_LocalPosition: {x: -31.349989, y: 0, z: 27.950016}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -10182,9 +10182,12 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "This choice pushes the ball further\r \ndown field with minimal risk of
-    a \r\nturnover, making it a decent choice. \r\nHowever, this chioce does not
-    directly \nset up for a shot.\n"
+  m_text: 'This is not a strong pass as it fails to move the
+
+    ball on the offensive
+    and creates a risk of being
+
+    scored on.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -14979,7 +14982,7 @@ Animator:
   m_GameObject: {fileID: 1269717031}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 3fc856dc8c5fb284eadebd7f29ec8e7e, type: 2}
+  m_Controller: {fileID: 0}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -17594,8 +17597,12 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "This choice would likely result in a \r\nturnover as it is a deep pass
-    to a well\r\ncovered player.\r\n"
+  m_text: 'While this choice moves the ball down
+
+    the field it is likely to result
+    in a turnover.
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -17692,7 +17699,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1333933607
 Transform:
   m_ObjectHideFlags: 0
@@ -19399,7 +19406,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5052295225809152168, guid: d8c232244c99939408082a11dcf848bd, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 148.1
+      value: 124.1
       objectReference: {fileID: 0}
     - target: {fileID: 5052295225809152168, guid: d8c232244c99939408082a11dcf848bd, type: 3}
       propertyPath: m_LocalPosition.y
@@ -19407,7 +19414,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5052295225809152168, guid: d8c232244c99939408082a11dcf848bd, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -72.7
+      value: -57.9
       objectReference: {fileID: 0}
     - target: {fileID: 5052295225809152168, guid: d8c232244c99939408082a11dcf848bd, type: 3}
       propertyPath: m_LocalRotation.w
@@ -25682,12 +25689,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'This choice gives an opportunity for
-
-    player B to make a shot on goal.
-    This
-
-    makes it the best overall.'
+  m_text: "This is a great pass as it best enables \nyour team to take the offensive
+    and \nmitigate the chance of being scored on."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -26005,8 +26008,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1819238875}
-  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -154.5, y: 0, z: -97.14999}
+  m_LocalRotation: {x: 0, y: 0.8660252, z: 0, w: 0.5000004}
+  m_LocalPosition: {x: -152, y: 0, z: -86.89999}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -27751,8 +27754,12 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "This pass is not likely to result in a\r\nturnover. However, it does not
-    \r\naccomplish much."
+  m_text: 'This is a decent choice as it moves the
+
+    ball away from your goal.
+    However, there
+
+    is another pass that does a better job of this.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -27779,8 +27786,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 12
-  m_fontSizeBase: 12
+  m_fontSize: 11
+  m_fontSizeBase: 11
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -28059,7 +28066,7 @@ GameObject:
   - component: {fileID: 1920459006}
   - component: {fileID: 1920459009}
   m_Layer: 5
-  m_Name: NextScenario
+  m_Name: Return
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -28132,8 +28139,8 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1920459009}
         m_TargetAssemblyTypeName: QuitGame, Assembly-CSharp
-        m_MethodName: AdvanceScene
-        m_Mode: 1
+        m_MethodName: LoadScene
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -28417,7 +28424,7 @@ MonoBehaviour:
     choice: Choice1
     KeyCode: 97
     travelTime: 1.75
-    score: 0
+    score: 25
     feedbackNoise: {fileID: 8300000, guid: 5f40a1bf114a092419e8b58e1465bc00, type: 3}
     analysisScreenIdx: 0
     explainationUI: {fileID: 536309873}
@@ -28425,7 +28432,7 @@ MonoBehaviour:
     choice: Choice2
     KeyCode: 115
     travelTime: 1
-    score: 50
+    score: 75
     feedbackNoise: {fileID: 8300000, guid: 4752e445a2fd16744997c522eedabd11, type: 3}
     analysisScreenIdx: 1
     explainationUI: {fileID: 165815840}
@@ -28440,9 +28447,9 @@ MonoBehaviour:
   - target: {fileID: 2002414033}
     choice: Choice4
     KeyCode: 102
-    travelTime: 0.6
-    score: 50
-    feedbackNoise: {fileID: 8300000, guid: 4752e445a2fd16744997c522eedabd11, type: 3}
+    travelTime: 0.55
+    score: 0
+    feedbackNoise: {fileID: 8300000, guid: 92af1a4d9490c3045a593a76bbefa4f6, type: 3}
     analysisScreenIdx: 3
     explainationUI: {fileID: 2067656603}
   translateCurve:

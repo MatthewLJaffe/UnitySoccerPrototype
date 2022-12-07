@@ -4,6 +4,8 @@ using TMPro;
 using UnityEngine;
 using System.Collections;
 using UnityEngine.Events;
+using UnityEngine.Playables;
+
 
 public class ScoreTracker : MonoBehaviour
 {
@@ -19,6 +21,7 @@ public class ScoreTracker : MonoBehaviour
     [SerializeField] private SoccerBallController soccerBallController;
     [SerializeField] private GameSettings gameSettings;
     public UnityEvent onTimeStart;
+    private bool _scoreComputed;
 
 
 
@@ -49,13 +52,14 @@ public class ScoreTracker : MonoBehaviour
 
     public void ComputeScore(float baseScore)
     {
-        if (baseScore >= 0)
+        if (!_timerOn)
         {
             if (decisionTime <= 0)
                 decisionTime = .01f;
             var timePenalty = -Mathf.RoundToInt(Mathf.Clamp(decisionTime * 10 - 20, 0, 100));
             if (baseScore == 0)
                 timePenalty = 0;
+            titleText.text = "Scenario Complete";
             scoreText.text = "Score: " + Mathf.RoundToInt(baseScore + timePenalty) + "/100";
             timePenaltyText.text = "Time Penalty: " + timePenalty;
             decisionScoreText.text = "Decision Score: " + baseScore;
