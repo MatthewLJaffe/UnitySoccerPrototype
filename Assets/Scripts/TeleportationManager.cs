@@ -22,9 +22,8 @@ public class TeleportationManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        //Think this handles null propagation without subscribing twice
-        _activate.performed += OnTeleportActivate;
-        _activate.performed -= OnTeleportActivate;
+        if (_activate != null)
+            _activate.performed -= OnTeleportActivate;
     }
 
     private void OnTeleportActivate(InputAction.CallbackContext callbackContext)
